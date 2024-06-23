@@ -1,0 +1,53 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UpSub.Abstractions", "UpSub.Abstractions/UpSub.Abstractions.csproj", "{0DBBF96D-39A3-45C1-8136-A3E252174126}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UpSub.UI", "UpSub.UI\UpSub.UI.csproj", "{D3C815D3-C061-4464-A4F4-34E99DE15AF1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UpSub.Service", "UpSub.Service\UpSub.Service.csproj", "{7E572160-BACF-4094-B285-BD03DC8F72E7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extern", "Extern", "{8D1FDD5B-406E-4904-B395-0B60C64BC23C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SukiUI.Dock", "..\extern\SukiUI\SukiUI.Dock\SukiUI.Dock.csproj", "{9609EE01-024F-4E6A-A9AD-E808C6177A7A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SukiUI", "..\extern\SukiUI\SukiUI\SukiUI.csproj", "{BF546A24-01F7-4478-8E8C-77B412F84DCB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SukiUI.Demo", "..\extern\SukiUI\SukiUI.Demo\SukiUI.Demo.csproj", "{7316BBA0-0699-4882-A27C-E3519B7640BF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0DBBF96D-39A3-45C1-8136-A3E252174126}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0DBBF96D-39A3-45C1-8136-A3E252174126}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0DBBF96D-39A3-45C1-8136-A3E252174126}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0DBBF96D-39A3-45C1-8136-A3E252174126}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3C815D3-C061-4464-A4F4-34E99DE15AF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3C815D3-C061-4464-A4F4-34E99DE15AF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3C815D3-C061-4464-A4F4-34E99DE15AF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3C815D3-C061-4464-A4F4-34E99DE15AF1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E572160-BACF-4094-B285-BD03DC8F72E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E572160-BACF-4094-B285-BD03DC8F72E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E572160-BACF-4094-B285-BD03DC8F72E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E572160-BACF-4094-B285-BD03DC8F72E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9609EE01-024F-4E6A-A9AD-E808C6177A7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9609EE01-024F-4E6A-A9AD-E808C6177A7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9609EE01-024F-4E6A-A9AD-E808C6177A7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9609EE01-024F-4E6A-A9AD-E808C6177A7A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF546A24-01F7-4478-8E8C-77B412F84DCB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF546A24-01F7-4478-8E8C-77B412F84DCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF546A24-01F7-4478-8E8C-77B412F84DCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF546A24-01F7-4478-8E8C-77B412F84DCB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7316BBA0-0699-4882-A27C-E3519B7640BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7316BBA0-0699-4882-A27C-E3519B7640BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7316BBA0-0699-4882-A27C-E3519B7640BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7316BBA0-0699-4882-A27C-E3519B7640BF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{9609EE01-024F-4E6A-A9AD-E808C6177A7A} = {8D1FDD5B-406E-4904-B395-0B60C64BC23C}
+		{BF546A24-01F7-4478-8E8C-77B412F84DCB} = {8D1FDD5B-406E-4904-B395-0B60C64BC23C}
+		{7316BBA0-0699-4882-A27C-E3519B7640BF} = {8D1FDD5B-406E-4904-B395-0B60C64BC23C}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,95 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:cs="clr-namespace:SukiUI.Controls;assembly=SukiUI"
+             xmlns:vms="clr-namespace:UpSub.UI.ViewModels"
+             xmlns:views="clr-namespace:UpSub.UI.Views"
+             xmlns:theme="clr-namespace:SukiUI.Theme;assembly=SukiUI"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             d:DataContext="{d:DesignInstance vms:SubConfigViewModel}"
+             x:Class="UpSub.UI.Views.ConfigCard">
+    <cs:GlassCard IsInteractive="True" Margin="8">
+        <Expander ExpandDirection="Down">
+            <Expander.Header>
+                <Grid>
+                    <TextBlock Text="{Binding Name}"
+                               IsVisible="{Binding EditingName,
+                               Converter={StaticResource BoolReConverter}}" />
+                    <TextBox Text="{Binding Name}"
+                             LostFocus="TitleOnLostFocus"
+                             IsVisible="{Binding EditingName}" />
+                </Grid>
+            </Expander.Header>
+            <Grid ColumnDefinitions="3*,1*">
+                <cs:GlassCard>
+                    <Grid Margin="4" RowDefinitions="*,*,*,*" ColumnDefinitions="Auto,*">
+                        <TextBlock Grid.Row="0" Grid.Column="0"
+                                   Margin="8" VerticalAlignment="Center"
+                                   Text="规则" />
+                        <ItemsControl Grid.Row="0" Grid.Column="1" CornerRadius="4"
+                                      ItemsSource="{Binding Blocks}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel Orientation="Horizontal" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <views:UrlBlockCard />
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <TextBlock Grid.Row="1" Grid.Column="0"
+                                   Margin="8" VerticalAlignment="Center"
+                                   Text="编码" />
+                        <ToggleSwitch Grid.Row="1" Grid.Column="1"
+                                      IsChecked="{Binding Encode}" />
+                        <TextBlock Grid.Row="2" Grid.Column="0"
+                                   Margin="8" VerticalAlignment="Center"
+                                   Text="预览" />
+                        <TextBox Grid.Row="2" Grid.Column="1" IsReadOnly="True"
+                                 VerticalAlignment="Center"
+                                 Text="{Binding Preview}" />
+                    </Grid>
+                </cs:GlassCard>
+                <cs:GlassCard Grid.Column="1" Margin="8,0,0,0">
+                    <Grid RowDefinitions="*,*">
+                        <ScrollViewer MaxHeight="300">
+                            <ItemsControl ItemsSource="{Binding Tests}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Url}" />
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                        <StackPanel Orientation="Horizontal" Grid.Row="1">
+                            <Button Content="取消" Margin="8"
+                                    IsVisible="{Binding  Canceler,
+                                    Converter={StaticResource NotNull2BoolConverter}}"
+                                    Command="{Binding CancelCommand}">
+                            </Button>
+                            <Button Margin="8"
+                                    HorizontalAlignment="Right" Content="测试"
+                                    theme:ButtonExtensions.ShowProgress="{Binding  Canceler,
+                                    Converter={StaticResource NotNull2BoolConverter}}"
+                                    Command="{Binding TestCommand}" />
+                        </StackPanel>
+
+                    </Grid>
+                </cs:GlassCard>
+
+            </Grid>
+
+            <Expander.ContextMenu>
+                <ContextMenu>
+                    <TextBlock Text="编辑" />
+                    <MenuItem
+                        Header="删除" Foreground="Red"
+                        Command="{Binding RemoveCommand}" />
+                </ContextMenu>
+            </Expander.ContextMenu>
+        </Expander>
+    </cs:GlassCard>
+</UserControl>

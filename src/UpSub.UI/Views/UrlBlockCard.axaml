@@ -1,0 +1,37 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:SukiUI.Controls;assembly=SukiUI"
+             xmlns:helpers="clr-namespace:SukiUI.Helpers;assembly=SukiUI"
+             xmlns:vms="clr-namespace:UpSub.UI.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             d:DataContext="{d:DesignInstance vms:UrlBlockViewModel}"
+             x:Class="UpSub.UI.Views.UrlBlockCard">
+    <Grid>
+        <controls:GlassCard CornerRadius="16" Padding="8"
+                      IsVisible="{Binding IsAdder,
+                                                                  Converter={StaticResource BoolReConverter}}"
+                      PointerPressed="BlockOnPointerPressed"
+                      GotFocus="BlockOnGotFocus"
+                      Margin="4,4" helpers:AnimationExtensions.FadeIn="500"
+                      IsAnimated="True" IsInteractive="True">
+            <StackPanel Orientation="Horizontal" Focusable="True">
+                <ToggleSwitch IsChecked="{Binding IsTemplate}"
+                              IsVisible="{Binding Focused}" />
+                <TextBox MinWidth="80" Text="{Binding Template}"
+                         GotFocus="BlockOnGotFocus" />
+                <Button CornerRadius="100" Padding="0"
+                        BorderThickness="2" Foreground="Red"
+                        Width="24" Height="24" Margin="8"
+                        Classes="Outlined"
+                        Content="×" IsVisible="{Binding Focused}"
+                        Command="{Binding RemoveCommand}" />
+            </StackPanel>
+        </controls:GlassCard>
+        <Button FontSize="20" CornerRadius="16"
+                Height="62.8" Width="68.4" Margin="4"
+                Content="+" IsVisible="{Binding IsAdder}"
+                Command="{Binding AddCommand}" />
+    </Grid>
+</UserControl>

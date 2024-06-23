@@ -1,0 +1,3 @@
+[submodule "extern/SukiUI"]
+	path = extern/SukiUI
+	url = https://github.com/feast107/SukiUI

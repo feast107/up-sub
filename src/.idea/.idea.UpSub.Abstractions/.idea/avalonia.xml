@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AvaloniaProject">
+    <option name="projectPerEditor">
+      <map>
+        <entry key="../extern/SukiUI/SukiUI.Demo/Features/ControlsLibrary/CardsView.axaml" value="../extern/SukiUI/SukiUI.Demo/SukiUI.Demo.csproj" />
+        <entry key="../extern/SukiUI/SukiUI.Demo/SukiUIDemoView.axaml" value="../extern/SukiUI/SukiUI.Demo/SukiUI.Demo.csproj" />
+        <entry key="../extern/SukiUI/SukiUI.Dock/ToolChromeControl.axaml" value="UpSub.UI/UpSub.UI.csproj" />
+        <entry key="UpSub.UI/App.axaml" value="UpSub.UI/UpSub.UI.csproj" />
+        <entry key="UpSub.UI/MainWindow.axaml" value="UpSub.UI/UpSub.UI.csproj" />
+        <entry key="UpSub.UI/Styles/CompletionWindowStyles.axaml" value="UpSub.UI/UpSub.UI.csproj" />
+        <entry key="UpSub.UI/Styles/GlassCardStyles.axaml" value="UpSub.UI/UpSub.UI.csproj" />
+        <entry key="UpSub.UI/Styles/ShowMeTheXamlStyles.axaml" value="UpSub.UI/UpSub.UI.csproj" />
+        <entry key="UpSub.UI/Styles/Styles/CompletionWindowStyles.axaml" value="UpSub.UI/UpSub.UI.csproj" />
+        <entry key="UpSub.UI/Styles/WrapPanelStyles.axaml" value="UpSub.UI/UpSub.UI.csproj" />
+      </map>
+    </option>
+  </component>
+</project>

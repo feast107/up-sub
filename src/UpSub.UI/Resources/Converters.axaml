@@ -1,0 +1,8 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:co="clr-namespace:UpSub.UI.Converters">
+    <!-- Add Resources Here -->
+    <co:BoolReConverter x:Key="BoolReConverter"/>
+    <co:NotNull2BoolConverter x:Key="NotNull2BoolConverter"/>
+    <co:Null2BoolConverter x:Key="Null2BoolConverter"/>
+</ResourceDictionary>

@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net8.0</TargetFramework>
+        <LangVersion>preview</LangVersion>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <PublishAot>true</PublishAot>
+        <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+        <InvariantGlobalization>true</InvariantGlobalization>
+        <ApplicationManifest>app.manifest</ApplicationManifest>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Avalonia" Version="11.1.0-rc1" />
+        <PackageReference Include="Avalonia.AvaloniaEdit" Version="11.0.6" />
+        <PackageReference Include="Avalonia.Desktop" Version="11.1.0-rc1" />
+        <PackageReference Include="Avalonia.Fonts.Inter" Version="11.1.0-rc1" />
+        <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
+        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.1.0-rc1" />
+        <PackageReference Include="Avalonia.Themes.Fluent" Version="11.1.0-rc1" />
+        <PackageReference Include="AvaloniaEdit.TextMate" Version="11.0.6" />
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+        <PackageReference Include="Dock.Avalonia" Version="11.1.0-rc1" />
+        <PackageReference Include="Dock.Model" Version="11.1.0-rc1" />
+        <PackageReference Include="Dock.Model.Avalonia" Version="11.1.0-rc1" />
+        <PackageReference Include="Material.Icons.Avalonia" Version="2.1.9" />
+        <PackageReference Include="ShowMeTheXaml.Avalonia" Version="1.5.1" />
+        <PackageReference Include="ShowMeTheXaml.Avalonia.Generator" Version="1.5.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\extern\SukiUI\SukiUI.Dock\SukiUI.Dock.csproj" />
+        <ProjectReference Include="..\UpSub.Abstractions\UpSub.Abstractions.csproj"/>
+        <ProjectReference Include="..\UpSub.Service\UpSub.Service.csproj"/>
+    </ItemGroup>
+
+</Project>
