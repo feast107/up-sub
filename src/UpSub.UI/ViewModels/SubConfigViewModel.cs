@@ -101,7 +101,7 @@ public partial class SubConfigViewModel : ObservableObject
     {
         await Dispatcher.UIThread.InvokeAsync(() => Tests.Clear());
         Canceler = new CancellationTokenSource();
-        await foreach (var (url, task) in RequestService.Request(Config, Time(), Canceler.Token))
+        await foreach (var (url, task) in RequestService.RequestAsync(Config, Time, Canceler.Token))
         {
             await Dispatcher.UIThread.InvokeAsync(() => Tests.Add(new TestResultViewModel
             {
@@ -116,11 +116,7 @@ public partial class SubConfigViewModel : ObservableObject
     public void Save()
     {
         Config.Name   = Name;
-        Config.Blocks = Blocks.Select(x => new UrlBlock
-        {
-            IsTemplate = x.IsTemplate,
-            Template   = x.Template,
-        }).ToList();
+        Config.Blocks = Blocks.Select(x => new UrlBlock(x.Template, x.IsTemplate)).ToList();
         Config.Encode = Encode;
         Config.Count  = Count;
     }

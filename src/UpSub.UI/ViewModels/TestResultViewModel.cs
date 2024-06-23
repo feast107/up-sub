@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using UpSub.Abstractions;
 
 namespace UpSub.UI.ViewModels;
 
@@ -10,8 +11,6 @@ public enum TestState
 }
 public partial class TestResultViewModel : ObservableObject
 {
-    
-  
     [ObservableProperty] private TestState state = TestState.Pending;
 
     public required string Url
@@ -22,13 +21,13 @@ public partial class TestResultViewModel : ObservableObject
 
     private         string url;
 
-    public required Task<HttpResponseMessage?> Task
+    public required Task<ConfigTestResult> Task
     {
         init
         {
             value.ContinueWith(t =>
             {
-                State = t.Result is null ? TestState.Failed : TestState.Success;
+                State = t.Result.Response is null ? TestState.Failed : TestState.Success;
             });
         }
     }

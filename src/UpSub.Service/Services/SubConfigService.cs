@@ -14,14 +14,28 @@ public class SubConfigService(ConfigRequestService request, ConfigIOService conf
             return;
         }
 
-        await foreach (var (_, task) in request.Request(config, DateTime.Today))
+        var day = DateTime.Today;
+        await foreach (var (_, task) in request.RequestAsync(config, () => day))
         {
-            var response = await task;
-            if (response == null) continue;
+            var (response, error, errorKind) = await task;
+            if (response == null)
+            {
+                switch (errorKind)
+                {
+                    case ErrorKind.NotFound:
+                        day -= TimeSpan.FromDays(1); //try yesterday
+                        break;
+                    case ErrorKind.Cancelled:
+                    case ErrorKind.NameResolutionError:
+                    case ErrorKind.Unknown:
+                        goto failed;
+                }
+                continue;
+            }
             await response.Content.CopyToAsync(context.Response.BodyWriter.AsStream());
             return;
         }
-
+        failed:
         await Results.NotFound().ExecuteAsync(context);
     }
 

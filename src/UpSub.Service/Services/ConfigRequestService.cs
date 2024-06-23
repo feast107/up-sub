@@ -5,38 +5,43 @@ namespace UpSub.Service.Services;
 
 public class ConfigRequestService(Func<HttpClient> clientFactory)
 {
-    public async IAsyncEnumerable<(string url, Task<HttpResponseMessage?> waiter)> Request(SubConfig config,
-        DateTime startTime,
+    public async IAsyncEnumerable<(string url, Task<ConfigTestResult> waiter)> RequestAsync(SubConfig config,
+        Func<DateTime> time,
         [EnumeratorCancellation] CancellationToken token = default)
     {
         var count = config.Count;
         while (count-- > 0)
         {
-            var url    = config.Url(startTime);
+            var url = config.Url(time());
             if (string.IsNullOrWhiteSpace(url)) yield break;
             var client = clientFactory();
             var task = Factory();
             yield return (url, task);
             var response = await task;
             if (token.IsCancellationRequested) yield break;
-            if (response != null) yield break;
-            startTime = startTime.AddDays(-1);
+            if (response.Response != null) yield break;
             continue;
 
-            async Task<HttpResponseMessage?> Factory()
+            async Task<ConfigTestResult> Factory()
             {
                 HttpResponseMessage? message;
+                HttpRequestError?    error;
                 try
                 {
                     message = await client.GetAsync(url, token);
+                    error   = null;
                 }
-                catch
+                catch(Exception exception)
                 {
+                    error = exception is HttpRequestException requestException 
+                        ? requestException.HttpRequestError 
+                        : null;
+
                     //
                     message = null;
                 }
 
-                return message;
+                return new ConfigTestResult(message, error);
             }
         }
     }
