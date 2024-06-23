@@ -2,29 +2,34 @@
 
 namespace UpSub.UI.ViewModels;
 
-public partial class TestResultViewModel(HttpClient client, string url, CancellationToken token) : ObservableObject
+public enum TestState
 {
-    public enum TestState
-    {
-        Success,
-        Pending,
-        Failed
-    }
-
+    Success,
+    Pending,
+    Failed
+}
+public partial class TestResultViewModel : ObservableObject
+{
+    
+  
     [ObservableProperty] private TestState state = TestState.Pending;
 
-    public string Url => url;
-
-    public async Task<TestState> Start()
+    public required string Url
     {
-        try
+        get => url;
+        init => url = string.IsNullOrWhiteSpace(value) ? "No URL" : value;
+    }
+
+    private         string url;
+
+    public required Task<HttpResponseMessage?> Task
+    {
+        init
         {
-            await client.GetAsync(url, token);
-            return State = TestState.Success;
-        }
-        catch
-        {
-            return State = TestState.Failed;
+            value.ContinueWith(t =>
+            {
+                State = t.Result is null ? TestState.Failed : TestState.Success;
+            });
         }
     }
 }

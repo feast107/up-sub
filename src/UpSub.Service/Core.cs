@@ -18,8 +18,8 @@ public class Core
         var builder = WebApplication.CreateSlimBuilder();
         builder.WebHost.ConfigureKestrel(x => x.ListenLocalhost(port));
         builder.Services.AddSingleton(new ConfigIOService(Path.Combine(AppContext.BaseDirectory, "subconfig.json")));
-        builder.Services.AddSingleton(new HttpClient());
-        builder.Services.AddSingleton<ConfigurationRoot>();
+        builder.Services.AddSingleton<Func<HttpClient>>(() => new HttpClient());
+        builder.Services.AddSingleton<ConfigRequestService>();
         builder.Services.AddSingleton<SubConfigService>();
         builder.Services.ConfigureHttpJsonOptions(options =>
         {
@@ -40,5 +40,5 @@ public class Core
     public void Stop() => app?.StopAsync();
 }
 
-[JsonSerializable(typeof(SubConfig[]))]
+[JsonSerializable(typeof(List<SubConfig>))]
 internal partial class AppJsonSerializerContext : JsonSerializerContext;

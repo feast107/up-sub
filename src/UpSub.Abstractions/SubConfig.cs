@@ -6,8 +6,8 @@ public class SubConfig
 {
     public required string Name { get; set; }
     public List<UrlBlock> Blocks { get; set; } = [];
-    
-    public int Count { get; set; }
+
+    public int Count { get; set; } = 10;
     
     public bool Encode { get; set; }
 

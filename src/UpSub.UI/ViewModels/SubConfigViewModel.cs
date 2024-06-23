@@ -5,20 +5,25 @@ using System.Text.Encodings.Web;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using DynamicData;
+using UpSub.Abstractions;
+using UpSub.Service.Services;
 
 namespace UpSub.UI.ViewModels;
 
 public partial class SubConfigViewModel : ObservableObject
 {
-    private readonly Func<DateTime> time;
-    private readonly MainViewModel  main;
-    public SubConfigViewModel(Func<DateTime> time, MainViewModel main)
+    public required ConfigRequestService RequestService { get; init; }
+    public required Func<DateTime> Time { get; init; }
+    public required MainViewModel  Main { get; init; }
+
+    public readonly SubConfig Config;
+    
+    public SubConfigViewModel(SubConfig config)
     {
-        this.time = time;
-        this.main = main;
+        Config = config;
         Add();
     }
+    
     public ObservableCollection<UrlBlockViewModel> Blocks { get; init; } = [];
 
     public string Name
@@ -73,9 +78,17 @@ public partial class SubConfigViewModel : ObservableObject
 
     public ObservableCollection<TestResultViewModel> Tests { get; } = [];
     
-    [ObservableProperty]
+    [ObservableProperty][NotifyPropertyChangedFor(nameof(CanClean))]
     private CancellationTokenSource? canceler;
 
+    public bool CanClean => Canceler is null && Tests.Count > 0;
+
+    [RelayCommand]
+    private void CleanTest()
+    {
+        Tests.Clear();
+        OnPropertyChanged(nameof(CanClean));
+    }
 
     [RelayCommand]
     private void Cancel() => Canceler?.Cancel();
@@ -86,22 +99,30 @@ public partial class SubConfigViewModel : ObservableObject
     [RelayCommand]
     private async Task Test()
     {
-        var times = Count;
+        await Dispatcher.UIThread.InvokeAsync(() => Tests.Clear());
         Canceler = new CancellationTokenSource();
-        TestResultViewModel? test;
-        do
+        await foreach (var (url, task) in RequestService.Request(Config, Time(), Canceler.Token))
         {
-            test = new TestResultViewModel(new HttpClient(), Preview, Canceler.Token);
-            await Dispatcher.UIThread.InvokeAsync(() =>
+            await Dispatcher.UIThread.InvokeAsync(() => Tests.Add(new TestResultViewModel
             {
-                Tests.Add(test);
-            });
-            await test.Start();
-        } while (test.State == TestResultViewModel.TestState.Failed 
-                 && times-- > 0
-                 && !Canceler.IsCancellationRequested);
+                Url  = url,
+                Task = task
+            }));
+        }
         
         Canceler = null;
+    }
+
+    public void Save()
+    {
+        Config.Name   = Name;
+        Config.Blocks = Blocks.Select(x => new UrlBlock
+        {
+            IsTemplate = x.IsTemplate,
+            Template   = x.Template,
+        }).ToList();
+        Config.Encode = Encode;
+        Config.Count  = Count;
     }
     
     [RelayCommand]
@@ -113,11 +134,8 @@ public partial class SubConfigViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private void Remove()
-    {
-        main.Configs.Remove(this);
-    }
-    
+    private void Remove() => Main.Remove(this);
+
     public void Remove(UrlBlockViewModel block)
     {
         block.PropertyChanged -= BlockOnPropertyChanged;
@@ -125,7 +143,7 @@ public partial class SubConfigViewModel : ObservableObject
         OnPropertyChanged(nameof(Preview));
     }
 
-    private DateTime TimeHandler() => time();
+    private DateTime TimeHandler() => Time();
     
     private void BlockOnPropertyChanged(object? sender, PropertyChangedEventArgs e) => OnPropertyChanged(nameof(Preview));
 }

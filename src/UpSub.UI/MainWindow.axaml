@@ -9,15 +9,18 @@
                x:Class="UpSub.UI.MainWindow" d:DataContext="{d:DesignInstance vms:MainViewModel}"
                Title="UpSub">
     <ScrollViewer>
-        <Grid RowDefinitions="Auto,Auto">
-            <ItemsControl ItemsSource="{Binding Configs}">
+        <Grid RowDefinitions="Auto,Auto,Auto">
+            <StackPanel Margin="8" >
+                <Button Content="保存" HorizontalAlignment="Right" Command="{Binding SaveCommand}"></Button>
+            </StackPanel>
+            <ItemsControl Grid.Row="1" ItemsSource="{Binding Configs}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <views:ConfigCard/>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
-            <Button Grid.Row="1" Content="+" Margin="8"
+            <Button Grid.Row="2" Content="+" Margin="8"
                     Command="{Binding AddCommand}" />
         </Grid>
     </ScrollViewer>

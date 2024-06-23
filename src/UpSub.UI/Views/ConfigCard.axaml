@@ -6,6 +6,7 @@
              xmlns:vms="clr-namespace:UpSub.UI.ViewModels"
              xmlns:views="clr-namespace:UpSub.UI.Views"
              xmlns:theme="clr-namespace:SukiUI.Theme;assembly=SukiUI"
+             xmlns:co="clr-namespace:SukiUI.Content;assembly=SukiUI"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              d:DataContext="{d:DesignInstance vms:SubConfigViewModel}"
              x:Class="UpSub.UI.Views.ConfigCard">
@@ -59,17 +60,33 @@
                             <ItemsControl ItemsSource="{Binding Tests}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <TextBlock Text="{Binding Url}" />
+                                        <Grid ColumnDefinitions="Auto,*">
+                                            <Button Classes="Basic" theme:ButtonExtensions.ShowProgress="{Binding State, 
+                                                Converter={StaticResource EqualToConverter},
+                                                ConverterParameter={x:Static vms:TestState.Pending}}"
+                                                    Content="{Binding Url}" />
+                                            <PathIcon Grid.Column="1" Data="{x:Static co:Icons.CircleCheck}" 
+                                                      IsVisible="{Binding State, 
+                                                Converter={StaticResource EqualToConverter},
+                                                ConverterParameter={x:Static vms:TestState.Success}}"/>
+                                            <PathIcon Grid.Column="1" Data="{x:Static co:Icons.CircleClose}" 
+                                                      IsVisible="{Binding State, 
+                                                Converter={StaticResource EqualToConverter},
+                                                ConverterParameter={x:Static vms:TestState.Failed}}"/>
+                                        </Grid>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
                         </ScrollViewer>
-                        <StackPanel Orientation="Horizontal" Grid.Row="1">
+                        <StackPanel MaxHeight="55" Orientation="Horizontal" Grid.Row="1">
                             <Button Content="取消" Margin="8"
                                     IsVisible="{Binding  Canceler,
                                     Converter={StaticResource NotNull2BoolConverter}}"
-                                    Command="{Binding CancelCommand}">
-                            </Button>
+                                    Command="{Binding CancelCommand}"/>
+                            <Button Content="清空" Margin="8"
+                                    IsVisible="{Binding  CanClean}"
+                                    Command="{Binding CleanTestCommand}"
+                                    />
                             <Button Margin="8"
                                     HorizontalAlignment="Right" Content="测试"
                                     theme:ButtonExtensions.ShowProgress="{Binding  Canceler,

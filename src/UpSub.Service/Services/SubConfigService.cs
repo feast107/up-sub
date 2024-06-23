@@ -14,8 +14,9 @@ public class SubConfigService(ConfigRequestService request, ConfigIOService conf
             return;
         }
 
-        await foreach (var (_, response) in request.Request(config, DateTime.Today))
+        await foreach (var (_, task) in request.Request(config, DateTime.Today))
         {
+            var response = await task;
             if (response == null) continue;
             await response.Content.CopyToAsync(context.Response.BodyWriter.AsStream());
             return;
@@ -24,13 +25,13 @@ public class SubConfigService(ConfigRequestService request, ConfigIOService conf
         await Results.NotFound().ExecuteAsync(context);
     }
 
-    public async Task<SubConfig[]> Configs()
+    public async Task<List<SubConfig>> Configs()
     {
         if (configs != null) return configs;
         try
         {
             configs = JsonSerializer.Deserialize(await configIo.LoadAsync(),
-                AppJsonSerializerContext.Default.SubConfigArray);
+                AppJsonSerializerContext.Default.ListSubConfig);
         }
         catch
         {
@@ -41,9 +42,9 @@ public class SubConfigService(ConfigRequestService request, ConfigIOService conf
         return configs!;
     }
 
-    private SubConfig[]? configs;
+    private List<SubConfig>? configs;
 
     public async Task Save() =>
         await configIo.SaveAsync(JsonSerializer.Serialize(await Configs(),
-            AppJsonSerializerContext.Default.SubConfigArray));
+            AppJsonSerializerContext.Default.ListSubConfig));
 }

@@ -2,6 +2,7 @@
 using Avalonia;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using SukiUI.Controls;
 using UpSub.Service;
@@ -23,7 +24,10 @@ public partial class MainWindow : SukiWindow
         var web = new Core();
         await web.Build(6043);
         await web.Start();
-        DataContext = new MainViewModel(await web.ServiceProvider.GetRequiredService<SubConfigService>().Configs());
+        DataContext = new MainViewModel(await web.ServiceProvider.GetRequiredService<SubConfigService>().Configs())
+        {
+            RequestService = web.ServiceProvider.GetRequiredService<ConfigRequestService>()
+        };
     }
 
 
