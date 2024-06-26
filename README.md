@@ -1,6 +1,6 @@
 # 🚀 Up Sub
- 
-Auto update subcriptions by date template.
+
+Auto detect latest subscription by date template
 
 # 💻 Preview
 
