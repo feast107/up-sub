@@ -7,7 +7,7 @@
                xmlns:views="clr-namespace:UpSub.UI.Views"
                mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
                x:Class="UpSub.UI.MainWindow" d:DataContext="{d:DesignInstance vms:MainViewModel}"
-               Title="UpSub">
+               Title="Up Sub">
     <Border>
         <Grid RowDefinitions="Auto,*">
             <StackPanel Margin="8">
