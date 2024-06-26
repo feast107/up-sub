@@ -1,4 +1,4 @@
-# Up Sub
+# 🚀 Up Sub
  
 Auto update subcriptions by date template.
 
