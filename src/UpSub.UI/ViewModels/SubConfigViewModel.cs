@@ -21,8 +21,28 @@ public partial class SubConfigViewModel : ObservableObject
     public SubConfigViewModel(SubConfig config)
     {
         Config = config;
+        Load();
+    }
+
+    public void Load()
+    {
+        Name = Config.Name;
+        Count = Config.Count;
+        Encode = Config.Encode;
+        Blocks.Clear();
+        foreach (var model in Config.Blocks.Select(x =>
+                 {
+                     var ret = new UrlBlockViewModel(TimeHandler, this)
+                     {
+                         IsAdder = false,
+                         Block   = x
+                     };
+                     ret.PropertyChanged += BlockOnPropertyChanged;
+                     return ret;
+                 })) Blocks.Add(model);
         Add();
     }
+    
     
     public ObservableCollection<UrlBlockViewModel> Blocks { get; init; } = [];
 
@@ -31,15 +51,13 @@ public partial class SubConfigViewModel : ObservableObject
         get => name;
         set
         {
-            if (!string.IsNullOrWhiteSpace(value))
-            {
-                name = value;
-            }
+            if (!string.IsNullOrWhiteSpace(value)) name = value;
             OnPropertyChanged();
+            OnPropertyChanged(nameof(Url));
         }
     }
 
-    private string name = DateTime.Now.ToString(CultureInfo.CurrentCulture);
+    private string name = string.Empty;
 
     [ObservableProperty]
     private bool editingName;
@@ -75,6 +93,8 @@ public partial class SubConfigViewModel : ObservableObject
             return Encode ? UrlEncoder.Default.Encode(fin) : fin;
         }
     }
+    
+    public string Url => Main.Url(Name);
 
     public ObservableCollection<TestResultViewModel> Tests { get; } = [];
     
@@ -101,7 +121,7 @@ public partial class SubConfigViewModel : ObservableObject
     {
         await Dispatcher.UIThread.InvokeAsync(() => Tests.Clear());
         Canceler = new CancellationTokenSource();
-        await foreach (var (url, task) in RequestService.RequestAsync(Config, Time, Canceler.Token))
+        await foreach (var (url, task) in RequestService.RequestAsync(Config, Time(), Canceler.Token))
         {
             await Dispatcher.UIThread.InvokeAsync(() => Tests.Add(new TestResultViewModel
             {
@@ -115,16 +135,22 @@ public partial class SubConfigViewModel : ObservableObject
 
     public void Save()
     {
-        Config.Name   = Name;
-        Config.Blocks = Blocks.Select(x => new UrlBlock(x.Template, x.IsTemplate)).ToList();
+        Config.Name = Name;
+        Config.Blocks = Blocks
+            .SkipLast(1)
+            .Select(x => x.Block)
+            .ToList();
         Config.Encode = Encode;
         Config.Count  = Count;
     }
-    
+
     [RelayCommand]
     public void Add()
     {
-        var block = new UrlBlockViewModel(TimeHandler, this);
+        var block = new UrlBlockViewModel(TimeHandler, this)
+        {
+            Block = new UrlBlock()
+        };
         block.PropertyChanged += BlockOnPropertyChanged;
         Blocks.Add(block);
     }

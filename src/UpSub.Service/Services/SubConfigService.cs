@@ -14,27 +14,28 @@ public class SubConfigService(ConfigRequestService request, ConfigIOService conf
             return;
         }
 
-        var day = DateTime.Today;
-        await foreach (var (_, task) in request.RequestAsync(config, () => day))
+        await foreach (var (_, task) in request.RequestAsync(config,  DateTime.Today))
         {
             var (response, error, errorKind) = await task;
-            if (response == null)
+
+            Console.WriteLine(errorKind);
+            switch (errorKind)
             {
-                switch (errorKind)
-                {
-                    case ErrorKind.NotFound:
-                        day -= TimeSpan.FromDays(1); //try yesterday
-                        break;
-                    case ErrorKind.Cancelled:
-                    case ErrorKind.NameResolutionError:
-                    case ErrorKind.Unknown:
-                        goto failed;
-                }
-                continue;
+                case ErrorKind.NotFound: continue;
+                case ErrorKind.Cancelled:
+                case ErrorKind.NameResolutionError:
+                case ErrorKind.Unknown:
+                    goto failed;
+                case ErrorKind.NoError:
+                    if (response != null)
+                    {
+                        await response.Content.CopyToAsync(context.Response.BodyWriter.AsStream());
+                    }
+                    return;
             }
-            await response.Content.CopyToAsync(context.Response.BodyWriter.AsStream());
-            return;
+
         }
+
         failed:
         await Results.NotFound().ExecuteAsync(context);
     }
@@ -60,5 +61,5 @@ public class SubConfigService(ConfigRequestService request, ConfigIOService conf
 
     public async Task Save() =>
         await configIo.SaveAsync(JsonSerializer.Serialize(await Configs(),
-            AppJsonSerializerContext.Default.ListSubConfig));
+            AppJsonSerializerContext.Intend.ListSubConfig));
 }

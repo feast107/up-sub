@@ -26,9 +26,9 @@ public partial class TestResultViewModel : ObservableObject
         init
         {
             value.ContinueWith(t =>
-            {
-                State = t.Result.Response is null ? TestState.Failed : TestState.Success;
-            });
+                State = t.Result.ErrorKind is ErrorKind.NoError
+                    ? TestState.Success
+                    : TestState.Failed);
         }
     }
 }

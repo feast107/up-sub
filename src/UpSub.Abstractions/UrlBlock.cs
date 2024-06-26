@@ -1,3 +1,3 @@
 ﻿namespace UpSub.Abstractions;
 
-public record UrlBlock(string Template, bool IsTemplate);
+public record UrlBlock(string Template = "", bool IsTemplate = false);

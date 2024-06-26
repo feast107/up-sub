@@ -1,10 +1,22 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using UpSub.Abstractions;
 
 namespace UpSub.UI.ViewModels;
 
 public partial class UrlBlockViewModel(Func<DateTime> time, SubConfigViewModel config) : ObservableObject
 {
+    public required UrlBlock Block
+    {
+        get => new (Template, IsTemplate);
+        init
+        {
+            Template   = value.Template;
+            IsTemplate = value.IsTemplate;
+        }
+    }
+
+    
     [RelayCommand]
     private void Add()
     {
@@ -53,4 +65,5 @@ public partial class UrlBlockViewModel(Func<DateTime> time, SubConfigViewModel c
 
     [RelayCommand]
     private void Remove() => config.Remove(this);
+
 }

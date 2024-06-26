@@ -9,6 +9,8 @@
         <entry key="../extern/SukiUI/SukiUI.Demo/Features/ControlsLibrary/ExpanderView.axaml" value="../extern/SukiUI/SukiUI.Demo/SukiUI.Demo.csproj" />
         <entry key="../extern/SukiUI/SukiUI.Demo/Features/ControlsLibrary/PropertyGridView.axaml" value="../extern/SukiUI/SukiUI.Demo/SukiUI.Demo.csproj" />
         <entry key="../extern/SukiUI/SukiUI.Demo/SukiUIDemoView.axaml" value="../extern/SukiUI/SukiUI.Demo/SukiUI.Demo.csproj" />
+        <entry key="../extern/SukiUI/SukiUI.Dock/HostWindow.axaml" value="../extern/SukiUI/SukiUI.Demo/SukiUI.Demo.csproj" />
+        <entry key="../extern/SukiUI/SukiUI.Dock/ToolChromeControl.axaml" value="../extern/SukiUI/SukiUI.Demo/SukiUI.Demo.csproj" />
         <entry key="UpSub.UI/App.axaml" value="UpSub.UI/UpSub.UI.csproj" />
         <entry key="UpSub.UI/MainWindow.axaml" value="UpSub.UI/UpSub.UI.csproj" />
         <entry key="UpSub.UI/Resources/Converters.axaml" value="UpSub.UI/UpSub.UI.csproj" />

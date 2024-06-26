@@ -1,9 +1,8 @@
 ﻿using System.Collections.ObjectModel;
-using System.Globalization;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using DynamicData;
 using UpSub.Abstractions;
+using UpSub.Service;
 using UpSub.Service.Services;
 
 namespace UpSub.UI.ViewModels;
@@ -11,25 +10,37 @@ namespace UpSub.UI.ViewModels;
 public partial class MainViewModel : ObservableObject
 {
     public required ConfigRequestService RequestService { get; init; }
+    public required SubConfigService     ConfigService  { get; init; }
 
-    private readonly List<SubConfig> configs;
+    public required Core Core { get; init; }
+
+
+    [ObservableProperty]
+    private int port = 6043;
     
-    public MainViewModel(List<SubConfig> configs)
+    public  ObservableCollection<SubConfigViewModel> Configs { get; set; } = [];
+    private List<SubConfig>                          configs { get; set; } = [];
+    
+    public async Task Load()
     {
-        this.configs = configs;
+        configs = await ConfigService.Configs();
+        foreach (var config in configs)
+        {
+            Add(config, true);
+        }
     }
 
-    public ObservableCollection<SubConfigViewModel> Configs { get; set; } = [];
-  
+    public string Url(string name) => Core.Url(name);
 
     [RelayCommand]
-    private void Add()
+    private void Add() => Add(new SubConfig
     {
-        var config = new SubConfig
-        {
-            Name = DateTime.Now.ToString(CultureInfo.CurrentCulture)
-        };
-        configs.Add(config);
+        Name = Global.RandomString
+    });
+
+    private void Add(SubConfig config, bool isLoad = false)
+    {
+        if(!isLoad) configs.Add(config);
         Configs.Add(new SubConfigViewModel(config)
         {
             RequestService = RequestService,
@@ -37,6 +48,7 @@ public partial class MainViewModel : ObservableObject
             Main           = this
         });
     }
+ 
 
     public void Remove(SubConfigViewModel config)
     {
@@ -45,8 +57,9 @@ public partial class MainViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private void Save()
+    private async Task Save()
     {
         foreach (var config in Configs) config.Save();
+        await ConfigService.Save();
     }
 }

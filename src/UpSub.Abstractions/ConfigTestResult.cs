@@ -13,8 +13,9 @@ public record ConfigTestResult(HttpResponseMessage? Response, HttpRequestError? 
 
     public ErrorKind ErrorKind => Error switch
     {
-        HttpRequestError.ConnectionError     => ErrorKind.ConnectionError,
-        HttpRequestError.NameResolutionError => ErrorKind.NameResolutionError,
+        HttpRequestError.ConnectionError       => ErrorKind.ConnectionError,
+        HttpRequestError.NameResolutionError   => ErrorKind.NameResolutionError,
+        HttpRequestError.SecureConnectionError => ErrorKind.SSLHandshakeFailure,
         null => Response is null
             ? ErrorKind.Cancelled
             : Response.IsSuccessStatusCode
@@ -36,4 +37,5 @@ public enum ErrorKind
     ConnectionError,
     NameResolutionError,
     NotFound,
+    SSLHandshakeFailure
 }
